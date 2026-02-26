@@ -1,7 +1,46 @@
 const revealItems = Array.from(document.querySelectorAll('.reveal'));
 const counters = Array.from(document.querySelectorAll('[data-target]'));
+const themeToggle = document.getElementById('theme-toggle');
+const themeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+const themeStorageKey = 'golden-crm-theme';
 
 let counterRan = false;
+
+const applyTheme = (theme) => {
+  const isDark = theme === 'dark';
+  document.documentElement.toggleAttribute('data-theme', isDark);
+
+  if (themeToggle) {
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+    themeToggle.textContent = isDark ? 'Light mode' : 'Dark mode';
+  }
+};
+
+const getStoredTheme = () => localStorage.getItem(themeStorageKey);
+
+const initializeTheme = () => {
+  const storedTheme = getStoredTheme();
+  if (storedTheme === 'dark' || storedTheme === 'light') {
+    applyTheme(storedTheme);
+    return;
+  }
+
+  applyTheme(themeQuery.matches ? 'dark' : 'light');
+};
+
+initializeTheme();
+
+themeToggle?.addEventListener('click', () => {
+  const isDark = document.documentElement.hasAttribute('data-theme');
+  const nextTheme = isDark ? 'light' : 'dark';
+  localStorage.setItem(themeStorageKey, nextTheme);
+  applyTheme(nextTheme);
+});
+
+themeQuery.addEventListener('change', (event) => {
+  if (getStoredTheme()) return;
+  applyTheme(event.matches ? 'dark' : 'light');
+});
 
 const runCounters = () => {
   if (counterRan) return;
