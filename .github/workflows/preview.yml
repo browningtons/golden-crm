@@ -1,0 +1,105 @@
+name: Deploy Preview (PR)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect Node project
+        id: detect
+        run: |
+          if [ -f package.json ]; then
+            echo "has_node=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_node=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node
+        if: steps.detect.outputs.has_node == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Build site
+        run: |
+          rm -rf .site
+          mkdir -p .site
+
+          if [ -f package.json ]; then
+            if [ -f package-lock.json ]; then
+              npm ci
+            else
+              npm install
+            fi
+
+            npm run build
+
+            if [ -d dist ]; then
+              cp -R dist/. .site/
+            elif [ -d build ]; then
+              cp -R build/. .site/
+            else
+              echo "No dist/ or build/ directory found after npm run build"
+              exit 1
+            fi
+          else
+            cp index.html styles.css script.js .site/
+            for dir in assets public img images; do
+              if [ -d "$dir" ]; then
+                cp -R "$dir" ".site/$dir"
+              fi
+            done
+          fi
+
+      - name: Publish PR preview
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./.site
+          destination_dir: previews/pr-${{ github.event.pull_request.number }}
+          keep_files: true
+
+      - name: Comment preview URL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request.number;
+            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/previews/pr-${pr}/`;
+            const body = `Preview ready: ${url}`;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr,
+            });
+
+            const marker = '<!-- preview-url-comment -->';
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: `${marker}\n${body}`,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr,
+                body: `${marker}\n${body}`,
+              });
+            }
