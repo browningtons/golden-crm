@@ -5,16 +5,25 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
   pull-requests: write
 
+concurrency:
+  group: pages-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
-  preview:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
 
       - name: Detect Node project
         id: detect
@@ -63,29 +72,42 @@ jobs:
             done
           fi
 
-      - name: Publish PR preview
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages preview artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./.site
-          destination_dir: previews/pr-${{ github.event.pull_request.number }}
-          keep_files: true
+          path: ./.site
+
+  deploy_preview:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy preview to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          preview: true
 
       - name: Comment preview URL
         uses: actions/github-script@v7
+        env:
+          PREVIEW_URL: ${{ steps.deployment.outputs.page_url }}
         with:
           script: |
             const pr = context.payload.pull_request.number;
-            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/previews/pr-${pr}/`;
+            const url = process.env.PREVIEW_URL;
             const body = `Preview ready: ${url}`;
+            const marker = '<!-- preview-url-comment -->';
+
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr,
             });
 
-            const marker = '<!-- preview-url-comment -->';
             const existing = comments.find(c => c.body && c.body.includes(marker));
 
             if (existing) {
