@@ -1,0 +1,4 @@
+week_start,channel,lifecycle_stage,sends,deliverability_rate,open_rate,click_rate,conversion_rate,incremental_lift_pct,unsubscribe_rate,complaint_rate,revenue,cost,roi
+2026-01-05,email,prospect,0,0,0,0,0,0,0,0,0,0,0
+2026-01-05,sms,consideration,0,0,0,0,0,0,0,0,0,0,0
+2026-01-05,push,conversion,0,0,0,0,0,0,0,0,0,0,0

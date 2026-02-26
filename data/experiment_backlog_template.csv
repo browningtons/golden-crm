@@ -1,0 +1,4 @@
+priority,test_name,hypothesis,segment,channel,primary_kpi,guardrail_kpi,owner,status,planned_start,planned_end,impact_score,confidence_score,effort_score
+1,App abandonment reminder,Reminder within 2h improves completion,high_intent,sms,completion_rate,opt_out_rate,CRM Specialist,planned,2026-03-02,2026-03-30,8,6,3
+2,Offer message framing,Trust-first language improves funded conversion,new_prospect,email,funded_conversion,unsubscribe_rate,CRM Manager,planned,2026-03-09,2026-04-06,7,5,4
+3,Push timing optimization,Evening send improves click-to-convert,mobile_active,push,conversion_rate,push_disable_rate,CRM Ops,planned,2026-03-16,2026-04-13,6,4,2
