@@ -1,0 +1,4 @@
+app_id,segment,customer_email,title,status,priority,owner,due_date,labels,notes
+co-parent-core,High-conflict,avery.thomas@example.com,Call inactive account,doing,high,Paul,2026-03-02,retention|risk,Usage dropped below threshold
+co-parent-pro,Trial upgrades,noah.bennett@example.com,Prepare annual-plan save offer,todo,medium,Paul,2026-03-05,upsell|pricing,Include side-by-side value table
+family-finance-lite,Partner referrals,jordan.hale@example.com,Guide CSV payment import,doing,low,Paul,2026-03-04,onboarding|support,Send import walkthrough and sample file

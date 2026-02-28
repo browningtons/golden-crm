@@ -14,6 +14,7 @@
   --orange-100: #ffd9c7;
   --orange-500: #f04a00;
   --orange-700: #b53300;
+  --red-700: #b91c1c;
   --text: var(--ink);
   --text-muted: var(--muted);
   --primary: var(--accent);
@@ -68,6 +69,10 @@ h2 {
   font-family: 'Fraunces', Georgia, serif;
 }
 
+a {
+  color: var(--link);
+}
+
 .app-shell {
   width: min(1280px, 94vw);
   margin: 1.2rem auto 2rem;
@@ -116,7 +121,9 @@ h2 {
   gap: 0.8rem;
 }
 
-.controls label {
+.controls label,
+.table-controls label,
+.importer-controls label {
   display: grid;
   gap: 0.35rem;
   font-size: 0.84rem;
@@ -178,7 +185,8 @@ h2 {
   gap: 0.75rem;
 }
 
-.dashboard-stack {
+.dashboard-stack,
+.form-stack {
   display: grid;
   gap: 0.9rem;
 }
@@ -208,7 +216,6 @@ h2 {
   color: var(--text-muted);
   padding: 0.16rem 0.48rem;
   font-size: 0.75rem;
-  white-space: nowrap;
 }
 
 .dashboard-grid {
@@ -279,7 +286,6 @@ h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
 }
 
 .card-list {
@@ -312,30 +318,38 @@ h2 {
   font-size: 0.82rem;
 }
 
-.form-stack {
-  display: grid;
-  gap: 0.9rem;
-}
-
 .entry-form {
   display: grid;
   gap: 0.6rem;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.table-controls {
+  display: flex;
+  justify-content: flex-end;
+}
+
 input,
-select {
+select,
+textarea {
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
   border-radius: 10px;
   padding: 0.52rem 0.6rem;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
 }
 
 input:focus-visible,
 select:focus-visible,
+textarea:focus-visible,
 .tab-btn:focus-visible,
-.btn:focus-visible {
+.btn:focus-visible,
+.inline-link:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 1px;
 }
@@ -389,6 +403,54 @@ th {
   border-color: var(--link);
 }
 
+.importer-card {
+  gap: 0.65rem;
+}
+
+.spec-box {
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.35rem;
+  background: color-mix(in srgb, var(--surface) 86%, var(--surface-2));
+}
+
+.inline-link {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.importer-actions {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.import-result {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.warning-title {
+  color: var(--orange-700);
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+.error-title {
+  color: var(--red-700);
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+.import-result ul {
+  margin: 0.1rem 0 0;
+  padding-left: 1rem;
+}
+
 @media (max-width: 1120px) {
   .controls,
   .metric-grid,
@@ -401,5 +463,9 @@ th {
 
   .app-header {
     flex-direction: column;
+  }
+
+  .table-controls {
+    justify-content: flex-start;
   }
 }

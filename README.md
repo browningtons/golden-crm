@@ -1,49 +1,80 @@
-# Manager CRM Marketing Case Study Project
+# Golden CRM
 
-This project is a practical portfolio package tailored to the **Manager, CRM Marketing (Acima / Upbound)** role.
+Multi-app CRM control plane for lifecycle operations across different product lines and customer segments.
 
-It is built to demonstrate:
-- CRM lifecycle strategy across email, SMS/MMS, and push
-- Data-driven planning and optimization
-- Cross-functional collaboration with Product, Analytics, Growth, and CRM Ops
-- Budget ownership and ROI discipline
-- Team leadership through clear briefs, process, and governance
+This app is built to help you:
+- Track leads/customers across multiple apps and segments
+- Move contacts through lifecycle pipeline stages
+- Run follow-up and retention task operations
+- Log campaigns and interactions with attribution context
+- Import records at scale via deterministic CSV contracts
 
-## Project Structure
+## Stack
 
-- `docs/01_role_to_strategy_map.md`  
-  Maps job responsibilities to concrete operating plans.
-- `docs/02_lifecycle_crm_strategy.md`  
-  End-to-end lifecycle strategy with segmentation and channel roles.
-- `docs/03_30_60_90_day_plan.md`  
-  In-office onboarding and impact plan for Draper, UT.
-- `docs/04_campaign_testing_roadmap.md`  
-  A/B and holdout roadmap, measurement design, and iteration cadence.
-- `docs/05_cross_functional_operating_model.md`  
-  Collaboration model with Product, Personalization, Analytics, and Growth.
-- `docs/06_budget_and_roi_framework.md`  
-  Budget governance and ROI model with decision rules.
-- `templates/campaign_brief_template.md`  
-  Reusable campaign brief for CRM Specialist and CRM Designer.
-- `templates/wbr_template.md`  
-  Weekly business review template for KPI tracking and actions.
-- `data/kpi_scorecard_template.csv`  
-  Starter scorecard for channel and lifecycle KPIs.
-- `data/experiment_backlog_template.csv`  
-  Prioritized testing backlog tied to business outcomes.
+- React 18 + TypeScript + Vite
+- GitHub Actions for CI + Pages deploy
+- LocalStorage persistence (current)
+- Supabase schema included for backend migration (`supabase/schema.sql`)
 
-## How to Use
+## Run Locally
 
-1. Start with `docs/01_role_to_strategy_map.md` and `docs/03_30_60_90_day_plan.md` for interview narrative.
-2. Use `docs/02_lifecycle_crm_strategy.md` and `docs/04_campaign_testing_roadmap.md` for technical depth.
-3. Bring printed or digital versions of templates and scorecards to discuss operating rigor.
-4. Customize assumptions (budget, audience size, conversion rates) to match recruiter feedback.
+```bash
+npm install
+npm run dev
+```
 
-## Suggested Interview Storyline
+Build:
 
-1. Business context and objective
-2. Lifecycle strategy and channel orchestration
-3. Operating cadence and team leadership model
-4. Measurement and test-learn system
-5. Budget trade-offs and growth plan
+```bash
+npm run build
+```
 
+## Core App Features
+
+- App portfolio and segment model
+- Customer lifecycle pipeline (`new`, `qualified`, `trial`, `paid`, `at-risk`, `churned`)
+- Task workspace with status/priority and due-date tracking
+- Campaign performance logging by app + segment
+- Interaction timeline by app + segment
+- Scoped KPI cards (MRR, open tasks, follow-up risk)
+- CSV importer with dry-run validation for contacts/tasks/campaigns
+
+## CSV Import Contract
+
+See full spec: `docs/CSV_IMPORT_SPEC.md`
+
+Templates:
+- `public/import-templates/contacts_template.csv`
+- `public/import-templates/tasks_template.csv`
+- `public/import-templates/campaigns_template.csv`
+
+Important rules:
+- CSV delimiter: comma `,`
+- Quote character: `"`
+- Encoding: UTF-8
+- Date format: `YYYY-MM-DD`
+- Multi-value helper columns use pipe delimiter: `|`
+
+## Deploy
+
+GitHub Pages deploys via Actions workflows:
+- `.github/workflows/ci.yml`
+- `.github/workflows/deploy.yml`
+- `.github/workflows/preview.yml`
+
+Pages source in GitHub repo settings should be set to **GitHub Actions**.
+
+## Backend Migration (Supabase)
+
+SQL schema for production persistence:
+- `supabase/schema.sql`
+
+Suggested next step:
+1. Create Supabase project
+2. Run schema SQL
+3. Replace localStorage adapter with Supabase client CRUD in `src/App.tsx`
+
+## Legacy Materials
+
+Initial interview case-study artifacts were archived to:
+- `legacy/interview-case-study/`

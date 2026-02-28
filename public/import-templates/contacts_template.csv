@@ -1,0 +1,4 @@
+app_id,segment,name,email,phone,stage,source,owner,monthly_value,usage_score,next_follow_up,labels,notes
+co-parent-core,Newly separated,Mia Carter,mia.carter@example.com,(801) 555-0110,trial,app-store,Paul,29,72,2026-03-05,onboarding|needs-invite,Trial user needs second parent invite
+co-parent-pro,Trial upgrades,Noah Bennett,noah.bennett@example.com,(385) 555-0131,paid,referral,Paul,39,84,2026-03-03,upsell-ready|annual-plan,Strong fit for annual plan
+family-finance-lite,Partner referrals,Jordan Hale,jordan.hale@example.com,(801) 555-0199,qualified,partner,Paul,19,63,2026-03-01,partner|import-support,Needs help importing prior payments

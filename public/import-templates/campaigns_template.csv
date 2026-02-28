@@ -1,0 +1,4 @@
+app_id,segment,date,name,channel,sent,conversions,revenue,notes
+co-parent-core,Newly separated,2026-03-01,Trial to Paid Prompt,email,220,23,897,Version B with social proof won
+co-parent-core,High-conflict,2026-03-02,Missing Expense Reminder,push,340,48,0,Retention utility push with progress meter
+co-parent-pro,Trial upgrades,2026-03-03,Annual Plan Save Offer,sms,110,16,624,Limited-time annual discount with direct checkout link
